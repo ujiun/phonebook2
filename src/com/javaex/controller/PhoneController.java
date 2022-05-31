@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.javaex.dao.PhoneDao;
+import com.javaex.util.WebUtil;
 import com.javaex.vo.PersonVo;
 
 @WebServlet("/pbc")
@@ -45,15 +46,24 @@ public class PhoneController extends HttpServlet {
 			request.setAttribute("pList", phoneList); //주소값 넘기기
 			
 			//데이터 + html --> jsp 시킨다
+			
+			WebUtil.forward(request, response, "/WEB-INF/list.jsp");
+			
+			/*
 			RequestDispatcher rd = request.getRequestDispatcher("/list.jsp");
 			rd.forward(request, response);
+			*/
 			
 		}else if("writeForm".equals(action)) { //등록폼일때   //문자열 다음 변수  -->이유:변수에 값이 없으면 null오류
 			
 			//포워드
+			
+			WebUtil.forward(request, response, "/WEB-INF/writeForm.jsp");
+			
+			/*
 			RequestDispatcher rd = request.getRequestDispatcher("/writeForm.jsp");
 			rd.forward(request, response);
-		
+		    */
 		}else if("write".equals(action)){  //등록일때
 			
 			
@@ -72,7 +82,11 @@ public class PhoneController extends HttpServlet {
 			System.out.println(count);
 			
 			//리다이렉트 list
-			response.sendRedirect("/phonebook2/pbc?action=list");  ////////확인 ./ pbc
+			WebUtil.redirect(request, response, "./pbc?action=list");
+			
+			/*
+			response.sendRedirect("./pbc?action=list");  ////////확인 ./ pbc
+			*/
 			
 		}else if("delete".equals(action)) {
 			
@@ -85,11 +99,13 @@ public class PhoneController extends HttpServlet {
 			System.out.println(count);
 			
 			//리다이렉트 list
+			WebUtil.redirect(request, response, "./pbc?action=list");
+			/*
 			response.sendRedirect("./pbc?action=list");
-			
+			*/
 		}else if("updateForm".equals(action)) {
 			//포워드
-			RequestDispatcher rd = request.getRequestDispatcher("/updateForm.jsp");
+			RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/updateForm.jsp");
 			rd.forward(request, response);
 		}else if("update".equals(action)) {
 			
@@ -104,8 +120,13 @@ public class PhoneController extends HttpServlet {
 			int count = phoneDao.personUpdate(personVo);
 			System.out.println(count);
 			
+			
 			//리다이렉트 list
+			WebUtil.redirect(request, response, "./pbc?action=list");
+			
+			/*
 			response.sendRedirect("./pbc?action=list");
+			*/
 		}else {
 			System.out.println("action 파라미터 없음");
 		}
